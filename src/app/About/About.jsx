@@ -118,7 +118,7 @@ const About = () => {
   };
 
   return (
-    <div id="about" className="w-full p-8 font-sans">
+    <div id="about" className="w-full p-8 h-150 font-sans">
       <div className="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
         {/* Sidebar */}
         <div className="flex flex-col lg:w-1/4 gap-4">

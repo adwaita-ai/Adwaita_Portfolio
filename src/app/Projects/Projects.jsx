@@ -28,7 +28,7 @@ const Projects = () => {
       image: weatherImg,
       tags: ["Power BI", "Data Analysis", "Visualization"],
       demo: "https://app.powerbi.com/groups/me/reports/4ae7cf95-a7e8-4b74-beca-6b3de1b22a4b/293de17b8a1a11e4231d?experience=power-bi",
-      github: "#"
+      github: null
     },
     {
       title: 'Rain prediction in Australia using ML',
@@ -36,7 +36,7 @@ const Projects = () => {
       image: RainImg,
       tags: ["Machine Learning", "Streamlit", "Python"],
       demo: "https://adwaita-weather-project.streamlit.app/",
-      github: "#"
+      github: null
     },
     {
       title: 'Automated detection of stolen vehicle using YOLO v8',
@@ -103,7 +103,7 @@ const Projects = () => {
   }, []);
 
   return (
-    <section className="w-full px-4 py-16 text-white" id="projects">
+    <section className="w-full px-4 py-16 mt-[-90px] text-white" id="projects">
       <div className="w-full max-w-6xl mx-auto flex flex-col items-start">
         <div className="text-4xl font-bold relative pb-2 mb-10 text-left" data-aos="fade-right">
           Projects
