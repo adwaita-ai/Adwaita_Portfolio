@@ -179,14 +179,14 @@ export default function SkillsCarousel() {
     setActiveIndex((prevIndex) => (prevIndex - 1 + skills.length) % skills.length);
   };
 
-  // Helper to get visible skills (exactly 3 cards)
+  // Helper to get visible skills - mobile shows 1, desktop shows 3
   const getVisibleSkills = () => {
+    if (isMobile) {
+      return [activeIndex];
+    }
     const result = [];
-    // Previous card
     result.push((activeIndex - 1 + skills.length) % skills.length);
-    // Active card
     result.push(activeIndex);
-    // Next card
     result.push((activeIndex + 1) % skills.length);
     return result;
   };
@@ -195,14 +195,22 @@ export default function SkillsCarousel() {
   const getPositionClass = (index) => {
     const visibleSkills = getVisibleSkills();
     
-    if (index === visibleSkills[0]) {
-      return "left-card";
-    } else if (index === visibleSkills[1]) {
-      return "center-card";
-    } else if (index === visibleSkills[2]) {
-      return "right-card";
+    if (isMobile) {
+      if (index === visibleSkills[0]) {
+        return "mobile-center-card";
+      } else {
+        return "mobile-hidden-card";
+      }
     } else {
-      return "hidden-card";
+      if (index === visibleSkills[0]) {
+        return "left-card";
+      } else if (index === visibleSkills[1]) {
+        return "center-card";
+      } else if (index === visibleSkills[2]) {
+        return "right-card";
+      } else {
+        return "hidden-card";
+      }
     }
   };
 
@@ -217,20 +225,23 @@ export default function SkillsCarousel() {
   };
 
   return (
-    <section className="w-full mt-[10]px px-4 py-16 text-white" id="skills">
+    <section className="w-full px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16 text-white" id="skills">
       <div className="w-full max-w-6xl mx-auto flex flex-col items-start">
-        <div className="text-4xl font-bold relative pb-2 mb-10 text-left" data-aos="fade-right">
+        <div className="text-2xl sm:text-3xl md:text-4xl font-bold relative pb-2 mb-6 sm:mb-8 md:mb-10 text-left">
           Skills
           <span className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-500"></span>
         </div>
       </div>
 
-      <div className="relative h-[550px] overflow-hidden mb-16">
+      <div className={`relative ${isMobile ? 'h-96 sm:h-[420px]' : 'h-[450px] md:h-[500px] lg:h-[550px]'} overflow-hidden mb-8 sm:mb-12 md:mb-16`}>
         {/* Skills carousel */}
         <div className="skills-carousel">
           {skills.map((skill, index) => {
             const cardClass = getPositionClass(index);
-            const isActiveCard = cardClass === "center-card";
+            const isActiveCard = isMobile ? 
+              cardClass === "mobile-center-card" : 
+              cardClass === "center-card";
+            
             return (
               <div
                 key={index}
@@ -243,28 +254,28 @@ export default function SkillsCarousel() {
                   }`}
                 >
                   {/* Card header */}
-                  <div className="relative h-24 w-full overflow-hidden bg-black flex items-center p-6">
-                    <div className={`p-4 rounded-lg bg-gradient-to-br ${skill.color} mr-6 text-white`}>
-                      {React.cloneElement(skill.icon, { size: 32 })}
+                  <div className="relative h-16 sm:h-20 md:h-24 w-full overflow-hidden bg-black flex items-center p-3 sm:p-4 md:p-6">
+                    <div className={`p-2 sm:p-3 md:p-4 rounded-lg bg-gradient-to-br ${skill.color} mr-3 sm:mr-4 md:mr-6 text-white`}>
+                      {React.cloneElement(skill.icon, { size: isMobile ? 20 : 24 })}
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-white">{skill.name}</h3>
-                      <div className="flex items-center mt-1">
-                        <span className={`text-sm font-medium ${getLevelColor(skill.level)}`}>
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white">{skill.name}</h3>
+                      <div className="flex items-center mt-0.5 sm:mt-1">
+                        <span className={`text-xs sm:text-sm font-medium ${getLevelColor(skill.level)}`}>
                           {skill.level}
                         </span>
-                        <span className="mx-2 text-gray-400">•</span>
-                        <span className="text-sm text-gray-300">{skill.years}</span>
+                        <span className="mx-1 sm:mx-2 text-gray-400">•</span>
+                        <span className="text-xs sm:text-sm text-gray-300">{skill.years}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Card content */}
-                  <div className="flex-1 p-5 bg-black">
-                    <p className="text-gray-200 mb-6">{skill.description}</p>
+                  <div className="flex-1 p-3 sm:p-4 md:p-5 bg-black">
+                    <p className="text-sm sm:text-base text-gray-200 mb-4 sm:mb-6 leading-relaxed">{skill.description}</p>
 
-                    <div className="flex flex-wrap gap-1.5 mt-auto">
-                      <span className="px-3 py-1 text-sm rounded-full bg-gray-800 text-white">
+                    <div className="flex flex-wrap gap-1 sm:gap-1.5 mt-auto">
+                      <span className="px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full bg-gray-800 text-white">
                         {skill.category}
                       </span>
                     </div>
@@ -272,8 +283,46 @@ export default function SkillsCarousel() {
                     {/* Gradient detail section at bottom */}
                     <div className={`absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r ${skill.color}`}></div>
 
-                    {isActiveCard && (
-                      <div className="absolute bottom-4 left-0 w-full px-5 flex justify-between items-center mt-4">
+                    {/* Mobile navigation controls */}
+                    {isMobile && isActiveCard && (
+                      <div className="absolute bottom-3 sm:bottom-4 left-0 w-full px-3 sm:px-5 flex justify-between items-center">
+                        <button
+                          className={`w-8 h-8 sm:w-10 sm:h-10 bg-gray-800/80 hover:bg-gradient-to-r ${skill.color} rounded-full flex items-center justify-center transition-colors shadow-lg border border-gray-700`}
+                          onClick={handlePrev}
+                          aria-label="Previous skill"
+                        >
+                          <ChevronLeft size={isMobile ? 16 : 20} />
+                        </button>
+                        <div className="flex space-x-1 sm:space-x-1.5">
+                          {skills.map((_, idx) => (
+                            <button
+                              key={idx}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveIndex(idx);
+                              }}
+                              className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${
+                                idx === activeIndex
+                                  ? `w-4 sm:w-6 bg-gradient-to-r ${skills[activeIndex].color}`
+                                  : 'bg-gray-600 hover:bg-gray-500'
+                              }`}
+                              aria-label={`Go to skill ${idx + 1}`}
+                            />
+                          ))}
+                        </div>
+                        <button
+                          className={`w-8 h-8 sm:w-10 sm:h-10 bg-gray-800/80 hover:bg-gradient-to-r ${skill.color} rounded-full flex items-center justify-center transition-colors shadow-lg border border-gray-700`}
+                          onClick={handleNext}
+                          aria-label="Next skill"
+                        >
+                          <ChevronRight size={isMobile ? 16 : 20} />
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Desktop navigation controls */}
+                    {!isMobile && isActiveCard && (
+                      <div className="absolute bottom-4 left-0 w-full px-5 flex justify-between items-center">
                         <button
                           className={`w-8 h-8 bg-gray-800/80 hover:bg-gradient-to-r ${skill.color} rounded-full flex items-center justify-center transition-colors shadow-lg border border-gray-700`}
                           onClick={handlePrev}
@@ -315,24 +364,28 @@ export default function SkillsCarousel() {
         </div>
 
         {/* Large screen navigation buttons outside cards */}
-        <div className="hidden md:flex absolute top-1/2 left-4 -translate-y-1/2 z-40">
-          <button
-            className={`w-12 h-12 bg-gray-800/80 hover:bg-gradient-to-r ${skills[activeIndex].color} rounded-full flex items-center justify-center transition-colors shadow-lg border border-gray-700 text-white`}
-            onClick={handlePrev}
-            aria-label="Previous skill"
-          >
-            <ChevronLeft size={20} />
-          </button>
-        </div>
-        <div className="hidden md:flex absolute top-1/2 right-4 -translate-y-1/2 z-40">
-          <button
-            className={`w-12 h-12 bg-gray-800/80 hover:bg-gradient-to-r ${skills[activeIndex].color} rounded-full flex items-center justify-center transition-colors shadow-lg border border-gray-700 text-white`}
-            onClick={handleNext}
-            aria-label="Next skill"
-          >
-            <ChevronRight size={20} />
-          </button>
-        </div>
+        {!isMobile && (
+          <>
+            <div className="hidden md:flex absolute top-1/2 left-2 lg:left-4 -translate-y-1/2 z-40">
+              <button
+                className={`w-10 h-10 lg:w-12 lg:h-12 bg-gray-800/80 hover:bg-gradient-to-r ${skills[activeIndex].color} rounded-full flex items-center justify-center transition-colors shadow-lg border border-gray-700 text-white`}
+                onClick={handlePrev}
+                aria-label="Previous skill"
+              >
+                <ChevronLeft size={20} />
+              </button>
+            </div>
+            <div className="hidden md:flex absolute top-1/2 right-2 lg:right-4 -translate-y-1/2 z-40">
+              <button
+                className={`w-10 h-10 lg:w-12 lg:h-12 bg-gray-800/80 hover:bg-gradient-to-r ${skills[activeIndex].color} rounded-full flex items-center justify-center transition-colors shadow-lg border border-gray-700 text-white`}
+                onClick={handleNext}
+                aria-label="Next skill"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Custom CSS styles */}
@@ -349,53 +402,94 @@ export default function SkillsCarousel() {
 
         .skill-card {
           position: absolute;
-          width: 320px;
-          height: 400px;
           transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
           cursor: pointer;
           backface-visibility: hidden;
           transform-style: preserve-3d;
         }
 
-        .center-card {
-          z-index: 30;
-          transform: translateX(0) scale(1.05);
-          opacity: 1;
-          box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .left-card {
-          z-index: 20;
-          transform: translateX(-340px) scale(0.85);
-          opacity: 0.8;
-          filter: brightness(0.8);
-        }
-
-        .right-card {
-          z-index: 20;
-          transform: translateX(340px) scale(0.85);
-          opacity: 0.8;
-          filter: brightness(0.8);
-        }
-
-        .hidden-card {
-          opacity: 0;
-          transform: translateX(0) scale(0.7);
-          pointer-events: none;
-        }
-
-        @media (max-width: 768px) {
+        /* Desktop styles */
+        @media (min-width: 769px) {
           .skill-card {
             width: 280px;
             height: 380px;
           }
-          
+
+          .center-card {
+            z-index: 30;
+            transform: translateX(0) scale(1.05);
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+          }
+
           .left-card {
-            transform: translateX(-260px) scale(0.85);
+            z-index: 20;
+            transform: translateX(-300px) scale(0.85);
+            opacity: 0.8;
+            filter: brightness(0.8);
           }
 
           .right-card {
-            transform: translateX(260px) scale(0.85);
+            z-index: 20;
+            transform: translateX(300px) scale(0.85);
+            opacity: 0.8;
+            filter: brightness(0.8);
+          }
+
+          .hidden-card {
+            opacity: 0;
+            transform: translateX(0) scale(0.7);
+            pointer-events: none;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .skill-card {
+            width: 320px;
+            height: 400px;
+          }
+
+          .left-card {
+            transform: translateX(-340px) scale(0.85);
+          }
+
+          .right-card {
+            transform: translateX(340px) scale(0.85);
+          }
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+          .skill-card {
+            width: 280px;
+            height: 360px;
+          }
+
+          .mobile-center-card {
+            z-index: 30;
+            transform: translateX(0) scale(1);
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+          }
+
+          .mobile-hidden-card {
+            opacity: 0;
+            transform: translateX(0) scale(0.8);
+            pointer-events: none;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .skill-card {
+            width: 260px;
+            height: 340px;
+          }
+        }
+
+        @media (max-width: 320px) {
+          .skill-card {
+            width: 240px;
+            height: 320px;
           }
         }
       `}</style>
