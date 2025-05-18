@@ -32,7 +32,7 @@ export default function Header() {
         <div className="hidden lg:block container mx-auto px-4">
           <nav className=" flex justify-between items-center">
             <div className=" hidden lg:block  text-[26px] font-bold text-white">
-              ADWAITA<span className= 'text-purple-600 text-[26px]'> AI</span>
+              ADWAITA<span className= 'text-purple-500 text-[26px]'> AI</span>
             </div>
 
             <ul className="flex space-x-6 xl:space-x-8">
