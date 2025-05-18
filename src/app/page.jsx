@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="h-[550px] mt-25 ml-10 mr-10">
+      <section className="h-[550px] mt-30 ml-10 mr-10 mb-[40px] m">
         <div className="container mx-auto h-full xl:pt-8 xl:pb-2">
           <div className="flex flex-col items-center gap-5 xl:flex-row xl:justify-between">
             {/* Photo Section */}
@@ -72,18 +72,21 @@ const Home = () => {
       </section>
 
       {/* Additional Sections */}
-      <section className="bg-transparent" id="about">
-        <About />
-      </section>
-      <section className="bg-transparent" id="skills">
-        <Skills />
-      </section>
-      <section className="bg-transparent" id="projects">
-        <Projects />
-      </section>
-      <section className="bg-transparent" id="contact">
-        <Contact />
-      </section>
+      <section className="py-16 px-4 bg-transparent" id="about">
+  <About />
+</section>
+
+<section className="py-16 px-4 bg-transparent" id="skills">
+  <Skills />
+</section>
+
+<section className="py-16 px-4 bg-transparent" id="projects">
+  <Projects />
+</section>
+
+<section className="py-16 px-4 bg-transparent" id="contact">
+  <Contact />
+</section>
     </>
   )
 }

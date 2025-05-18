@@ -9,6 +9,7 @@ const About = () => {
       case 'about':
         return (
           <>
+          <div className=''>
             <div className="text-4xl font-bold text-white">
               About <span className="text-purple-600">Me</span>
             </div>
@@ -28,6 +29,7 @@ const About = () => {
                   <div className="text-base">{item.value}</div>
                 </div>
               ))}
+            </div>
             </div>
           </>
         );
@@ -54,6 +56,7 @@ const About = () => {
               </div>
             </div>
           </div>
+          
         );
 
       case 'education':
@@ -118,7 +121,7 @@ const About = () => {
   };
 
   return (
-    <div id="about" className="w-full p-8 h-150 font-sans">
+    <div id="about" className="w-full p-8  h-150 font-sans">
       <div className="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
         {/* Sidebar */}
         <div className="flex flex-col lg:w-1/4 gap-4">
@@ -143,6 +146,7 @@ const About = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

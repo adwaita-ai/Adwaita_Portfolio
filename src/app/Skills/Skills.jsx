@@ -217,7 +217,7 @@ export default function SkillsCarousel() {
   };
 
   return (
-    <section className="w-full px-4 py-16 text-white" id="skills">
+    <section className="w-full mt-[10]px px-4 py-16 text-white" id="skills">
       <div className="w-full max-w-6xl mx-auto flex flex-col items-start">
         <div className="text-4xl font-bold relative pb-2 mb-10 text-left" data-aos="fade-right">
           Skills
